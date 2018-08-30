@@ -4,32 +4,44 @@ using UnityEngine;
 
 public class Plane_movement : MonoBehaviour
 {
-    public float speed = 0.0f;
+    public float speed = 50.0f;
+    Rigidbody rb;
 
 	// Use this for initialization
 	void Start ()
     {
-		
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate ()
+        speed = 50.0f;
+        rb = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         if (Input.GetKey(KeyCode.W))
         {
-            speed = Mathf.Lerp(speed, 50.0f, 0.01f);
+            
+            rb.AddForce(Vector3.up * 0.1f, ForceMode.Impulse);
         }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            speed = Mathf.Lerp(speed, 0.0f, 0.01f);
-        }
-        transform.position += -transform.forward * Time.deltaTime * speed;
-        transform.position += transform.up * Time.deltaTime * speed / 20;
-        Vector3 moveCamTo = transform.position + transform.forward * 30.0f + Vector3.up * 5.0f;
+
+        transform.position += transform.forward * Time.deltaTime * speed;
+
+        Vector3 moveCamTo = transform.position + -transform.forward * 30.0f + Vector3.up * 5.0f;
         Camera.main.transform.position = moveCamTo;
         Camera.main.transform.LookAt(transform.position);
 
 
-        transform.Rotate(Input.GetAxis("Vertical"), 0.0f, Input.GetAxis("Horizontal"));	
-	}
+        transform.Rotate(-Input.GetAxis("Vertical"),  0.0f, -Input.GetAxis("Horizontal"));
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            rb.AddForce(Vector3.Cross(transform.up, transform.forward) * 0.1f, ForceMode.Impulse);
+            transform.Rotate( 0.0f, Input.GetAxis("Horizontal") ,0.0f);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            rb.AddForce(-Vector3.Cross(transform.up, transform.forward) * 0.1f, ForceMode.Impulse);
+            transform.Rotate(0.0f, Input.GetAxis("Horizontal") , 0.0f);
+        }
+    }
+
 }
