@@ -5,16 +5,20 @@ public class NPC : MonoBehaviour {
 
     bool targetted;
     bool notYetInteractedWith;   // whether or not they have anything new to say/do at the time
-    public Dialogue dialogue;
+   
+	public Dialogue dialogue;
     
 	void Start () {
         targetted = false;
         notYetInteractedWith = true;
 	}
 
-    public void TriggerDialogue()
-    {
-        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
+	public void TriggerDialogue(bool alreadyInDialogue)
+    { 
+		if (!alreadyInDialogue)
+			FindObjectOfType<DialogueManager>().StartDialogue(dialogue, dialogue.speaker);
+		else 
+			FindObjectOfType<DialogueManager>().DisplayNextSentence();
     }
 
 	

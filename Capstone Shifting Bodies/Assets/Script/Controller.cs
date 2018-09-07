@@ -13,6 +13,8 @@ public class Controller : MonoBehaviour {
 
     private GameObject target;
 
+	public bool inDialogue = false;
+
 	void Start () {
 		rigidbody = GetComponent<Rigidbody> ();
 		viewCamera = Camera.main;
@@ -22,10 +24,14 @@ public class Controller : MonoBehaviour {
     }
 
 	void Update () {
-        // mouse position relative to viewport
-        Vector3 mousePos = new Vector3(Input.mousePosition.x, 0, Input.mousePosition.y);
-        transform.LookAt (mousePos - center,  Vector3.up);
-		velocity = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical")).normalized * moveSpeed;
+
+		// Movement controls during gameplay (use gamestates later)
+		if (!inDialogue) {
+			// mouse positi on relative to viewport
+			Vector3 mousePos = new Vector3 (Input.mousePosition.x, 0, Input.mousePosition.y);
+			transform.LookAt (mousePos - center, Vector3.up);
+			velocity = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical")).normalized * moveSpeed;
+		}
 
 		// reset scene
 		if (Input.GetKeyDown (KeyCode.LeftShift))
@@ -48,7 +54,7 @@ public class Controller : MonoBehaviour {
 
         // set new target
         target = other.gameObject;
-        Debug.Log("Target is " + target.name);
+        //Debug.Log("Target is " + target.name);
 
         // highlight new target
         target.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
@@ -66,9 +72,12 @@ public class Controller : MonoBehaviour {
         if (other.gameObject.tag != "Interactable") return;
 
         if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("Interacting with " + target.name);
-            if (target.GetComponent<NPC>())
-                target.GetComponent<NPC>().TriggerDialogue();
+            //Debug.Log("Interacting with " + target.name);
+
+			// interacting with NPCs for dialogue
+			if (target.GetComponent<NPC>())		// start new dialogue
+				target.GetComponent<NPC>().TriggerDialogue(inDialogue);
+				
         }
     }
 }

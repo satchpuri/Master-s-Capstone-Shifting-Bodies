@@ -1,21 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour {
 
-    public GameObject dialogueBubblePrefab;
+    public GameObject dialogueBubble;
+	public Text nameText;
+	public Text dialogueText;
+
     private Queue<string> sentences;
+
+	Controller playerController;
 
 	void Start () {
         sentences = new Queue<string>();
+		playerController = GameObject.Find ("Player").GetComponent<Controller> ();
 	}
     
 
     // begins the dialogue
     // called from player interaction with target NPC
-    public void StartDialogue(Dialogue dialogue)
+	public void StartDialogue(Dialogue dialogue, string charName)
     {
-        Debug.Log("starting dialogue");
+		dialogueBubble.SetActive (true);
+		nameText.text = charName;
+		playerController.inDialogue = true;	// Set to being in dialogue (to disable movement)
 
         // clear old dialogue
         sentences.Clear();
@@ -29,8 +39,8 @@ public class DialogueManager : MonoBehaviour {
 
     }
 
-    public void DisplayNextSentence()
-    {
+	// continues dialogue
+    public void DisplayNextSentence() {
         if (sentences.Count == 0)
         {
             EndDialogue();
@@ -38,12 +48,26 @@ public class DialogueManager : MonoBehaviour {
         }
 
         string sentence = sentences.Dequeue();
-        Debug.Log(sentence);
+
+		// display text
+		StopAllCoroutines();	// make sure other coroutines end if user proceeds past previous text before it completes
+		StartCoroutine (TypeSentence (sentence));
     }
 
-    void EndDialogue()
-    {
-        Debug.Log("end of conversation");
+	// "animate" typing out letters
+	private IEnumerator TypeSentence(string sentence) {
+		dialogueText.text = "";
+		foreach (char letter in sentence.ToCharArray()) {
+			dialogueText.text += letter;
+
+			yield return null;	// wait one frame
+		}
+	}
+
+	// closes dialogue
+    void EndDialogue() {
+		dialogueBubble.SetActive (false);
+		playerController.inDialogue = false;
     }
 
 
