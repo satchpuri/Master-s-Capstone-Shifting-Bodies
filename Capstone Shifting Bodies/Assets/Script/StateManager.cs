@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum GameShiftState { A, B };
 public enum TimeState { Past, Present };
 
 public class StateManager : MonoBehaviour {
+
+    public Text StateText;
 
     /// <summary>
     /// The state of the game. This state should change based on the interactions of the players. 
@@ -53,5 +56,12 @@ public class StateManager : MonoBehaviour {
         {
             ToggleTimeState();
         }
+
+        UpdateText();
 	}
+
+    void UpdateText()
+    {
+        StateText.text = "Time: " + GameTimeState.ToString() + ";  Shift State: " + GameState.ToString();
+    }
 }
