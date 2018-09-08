@@ -13,6 +13,8 @@ public class Controller : MonoBehaviour {
 
     private GameObject target;
 
+    private Vector3 startPosition;
+
 	public bool inDialogue = false;
 
 	void Start () {
@@ -21,6 +23,7 @@ public class Controller : MonoBehaviour {
 
         // point at centre of viewport
         center = new Vector3(Screen.width / 2, 0, Screen.height / 2);
+        startPosition = transform.position;
     }
 
 	void Update () {
@@ -33,9 +36,9 @@ public class Controller : MonoBehaviour {
 			velocity = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical")).normalized * moveSpeed;
 		}
 
-		// reset scene
-		if (Input.GetKeyDown (KeyCode.LeftShift))
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+        // reset position
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            transform.position = startPosition;
     }
 
 	void FixedUpdate() {

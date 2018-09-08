@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using UnityEngine.Events;
 
 public class DialogueManager : MonoBehaviour {
 
@@ -95,7 +97,7 @@ public class DialogueManager : MonoBehaviour {
 			newButton.transform.SetParent(optionsObj.transform);
 			newButton.transform.localPosition = new Vector3 (0, nextYPos, 0);
 
-			newButton.GetComponent<Button>().onClick.AddListener(EndInteraction);
+            newButton.GetComponent<Button>().onClick.AddListener(EndInteraction);
 			newButton.transform.GetComponentInChildren<Text>().text = options.responses[i]; 
 		}
 
