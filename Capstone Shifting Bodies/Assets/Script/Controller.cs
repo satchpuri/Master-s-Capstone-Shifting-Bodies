@@ -7,7 +7,7 @@ public class Controller : MonoBehaviour {
 	public float moveSpeed = 6;
 
 	Rigidbody rigidbody;
-	Camera viewCamera;
+	//Camera viewCamera;
 	Vector3 velocity;
     Vector3 center;
 
@@ -17,7 +17,7 @@ public class Controller : MonoBehaviour {
 
 	void Start () {
 		rigidbody = GetComponent<Rigidbody> ();
-		viewCamera = Camera.main;
+		//viewCamera = Camera.main;
 
         // point at centre of viewport
         center = new Vector3(Screen.width / 2, 0, Screen.height / 2);
@@ -75,8 +75,10 @@ public class Controller : MonoBehaviour {
             //Debug.Log("Interacting with " + target.name);
 
 			// interacting with NPCs for dialogue
-			if (target.GetComponent<NPC>())		// start new dialogue
-				target.GetComponent<NPC>().TriggerDialogue(inDialogue);
+			if (target.GetComponent<NPC> ())		// start new dialogue
+				target.GetComponent<NPC> ().TriggerInteraction (inDialogue);
+			else
+				target.GetComponent<InteractableObject> ().TriggerInteraction (inDialogue);
 				
         }
     }

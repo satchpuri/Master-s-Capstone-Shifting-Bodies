@@ -9,6 +9,10 @@ public class DialogueManager : MonoBehaviour {
 	public Text nameText;
 	public Text dialogueText;
 
+	public GameObject optionsObj;
+	public GameObject optionButtonPrefab;
+	Button[] optionButtons;
+
     private Queue<string> sentences;
 
 	Controller playerController;
@@ -16,6 +20,7 @@ public class DialogueManager : MonoBehaviour {
 	void Start () {
         sentences = new Queue<string>();
 		playerController = GameObject.Find ("Player").GetComponent<Controller> ();
+
 	}
     
 
@@ -70,5 +75,37 @@ public class DialogueManager : MonoBehaviour {
 		playerController.inDialogue = false;
     }
 
+
+	//----- Dispaying player responses/options
+
+	public void DisplayOptions(PlayerResponses options) {
+		playerController.inDialogue = true;
+
+		// destorY PREEXISTING BUTTONS FIRST
+		optionButtons = optionsObj.GetComponentsInChildren<Button>();
+		foreach (Button b in optionButtons) {
+			Destroy (b.gameObject);
+		}
+
+		int nextYPos = 90;
+		// Make the buttons
+		for (int i = 0; i < options.responses.Length ; i++) {
+			nextYPos -= 90;
+			GameObject newButton = Instantiate (optionButtonPrefab, new Vector3 (0, 0, 0), Quaternion.identity);
+			newButton.transform.SetParent(optionsObj.transform);
+			newButton.transform.localPosition = new Vector3 (0, nextYPos, 0);
+
+			newButton.GetComponent<Button>().onClick.AddListener(EndInteraction);
+			newButton.transform.GetComponentInChildren<Text>().text = options.responses[i]; 
+		}
+
+		// display options
+		optionsObj.SetActive(true);
+	}
+
+	public void EndInteraction() {
+		playerController.inDialogue = false;
+		optionsObj.SetActive(false);
+	}
 
 }
