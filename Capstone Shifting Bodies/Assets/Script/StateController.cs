@@ -7,7 +7,8 @@ using UnityEngine;
 public class StateController : MonoBehaviour
 {
     /// <summary>
-    /// Stores the state properties for this object. Defines the position of the object based on time and state.
+    /// Stores the state properties for this object. Defines the position of the object based on time and state. These values should be modified
+    /// from the editor. 
     /// </summary>
     public List<StateProperties> stateProperties = new List<StateProperties>(StateProperties.GetDefaultProperties());
 

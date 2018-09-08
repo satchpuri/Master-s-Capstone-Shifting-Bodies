@@ -10,12 +10,24 @@ namespace Assets.Script
     [System.Serializable]
     public class StateProperties
     {
+        /// <summary>
+        /// Shift State for given properties. Will be either A or B
+        /// </summary>
         public GameShiftState ShiftState;
 
+        /// <summary>
+        /// Time State for given properties. Will be either 'Past' or 'Present'
+        /// </summary>
         public TimeState TimeState;
 
+        /// <summary>
+        /// Position associated with this time and state.
+        /// </summary>
         public Vector3 Position;
 
+        /// <summary>
+        /// Dialogues associated with this time and state. 
+        /// </summary>
         public Dialogue Dialogues;
 
         public List<Action> TransitionActions = new List<Action>();

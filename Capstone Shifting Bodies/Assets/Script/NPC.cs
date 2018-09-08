@@ -11,13 +11,15 @@ public class NPC : InteractableObject
     {
         stateController = GetComponent<StateController>();
         if (stateController != null)
-        {
+        {   
+            // Assign the time and state's dialogues to NPC to reflect change in state.
+            // This delegate function will be invoked whenever the time state changes. 
             stateController.OnTimeStateChangeAction = (StateManager stateManager) =>
             {
                 Debug.Log("Test");
                 var state = stateManager.GameState;
                 var timeState = stateManager.GameTimeState;
-                dialogue = stateController.stateMap[timeState][state].Dialogues;
+                dialogue = stateController.stateMap[timeState][state].Dialogues; // Change NPC's dialogues according to given time and state. 
             };
         }
     }
